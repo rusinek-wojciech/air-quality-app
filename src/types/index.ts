@@ -1,4 +1,4 @@
-type Id = number
+export type Id = number
 type Date = string
 type Maybe<T> = T | null
 

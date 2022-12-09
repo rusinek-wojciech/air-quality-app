@@ -5,7 +5,7 @@ import {
   useGetStationsQuery,
 } from '../store/api/giosApi'
 import './App.css'
-import { AirIndex, Sensor, Station } from '../store/api/types'
+import { AirIndex, Sensor, Station } from '../types'
 import { useState } from 'react'
 
 export const App = () => {
