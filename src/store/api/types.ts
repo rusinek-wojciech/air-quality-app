@@ -1,5 +1,6 @@
 type Id = number
 type Date = string
+type Maybe<T> = T | null
 
 export interface City {
   id: Id
@@ -56,29 +57,29 @@ export interface AirIndex {
   id: Id
   // st
   stCalcDate: Date
-  stIndexLevel: AirIndexLevel
+  stIndexLevel: Maybe<AirIndexLevel>
   stSourceDataDate: Date
   stIndexStatus: boolean
   stIndexCrParam: string
   // so2
   so2CalcDate: Date
-  so2IndexLevel: AirIndexLevel
+  so2IndexLevel: Maybe<AirIndexLevel>
   so2SourceDataDate: Date
   // no2
   no2CalcDate: Date
-  no2IndexLevel: AirIndexLevel
+  no2IndexLevel: Maybe<AirIndexLevel>
   no2SourceDataDate: Date
   // pm10
   pm10CalcDate: Date
-  pm10IndexLevel: AirIndexLevel
+  pm10IndexLevel: Maybe<AirIndexLevel>
   pm10SourceDataDate: Date
   // pm25
   pm25CalcDate: Date
-  pm25IndexLevel: AirIndexLevel
+  pm25IndexLevel: Maybe<AirIndexLevel>
   pm25SourceDataDate: Date
   // o3
   o3CalcDate: Date
-  o3IndexLevel: AirIndexLevel
+  o3IndexLevel: Maybe<AirIndexLevel>
   o3SourceDataDate: Date
 }
 
