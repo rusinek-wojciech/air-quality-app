@@ -4,9 +4,9 @@ import {
   useGetSensorsByStationIdQuery,
   useGetStationsQuery,
 } from '../store/api/giosApi'
-import './App.css'
 import { AirIndex, Sensor, Station } from '../types'
 import { useState } from 'react'
+import { SensorDetails } from './SensorDetails'
 
 export const App = () => {
   const [selectedStation, setSelectedStation] = useState<Station | null>(null)
@@ -21,7 +21,7 @@ export const App = () => {
   }
 
   return (
-    <div className='App'>
+    <div>
       <h1>Air Quality App</h1>
       <div>
         <table>
@@ -68,7 +68,7 @@ const StationRow = ({
   const district = communeName === districtName ? '-' : districtName
 
   return (
-    <tr className='tableRow' onClick={onClick}>
+    <tr className='cursor-pointer hover:bg-slate-300' onClick={onClick}>
       <td>{provinceName}</td>
       <td>{district}</td>
       <td>{commune}</td>
@@ -93,9 +93,12 @@ const Modal = ({
   })
 
   return (
-    <div className='modal'>
-      <div className='modal-content'>
-        <span className='close' onClick={onClose}>
+    <div className='block fixed z-10 inset-0 overflow-y-scroll'>
+      <div className='bg-slate-300 border-1 p-4'>
+        <span
+          className='text-slate-900 float-right font-bold text-3xl hover:cursor-pointer'
+          onClick={onClose}
+        >
           &times;
         </span>
 
@@ -120,19 +123,6 @@ const Modal = ({
           <div>Sensors loading...</div>
         )}
       </div>
-    </div>
-  )
-}
-
-const SensorDetails = ({ sensor }: { sensor: Sensor }) => {
-  return (
-    <div>
-      <p>
-        <b>{`${sensor.stationId} -> ${sensor.id}`}</b>
-      </p>
-      <p>{sensor.param.paramCode}</p>
-      <p>{sensor.param.paramFormula}</p>
-      <p>{sensor.param.paramName}</p>
     </div>
   )
 }
