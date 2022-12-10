@@ -1,68 +1,103 @@
-import { Sensors, AirIndex } from '../types'
+import {
+  useGetAirIndexByStationIdQuery,
+  useGetSensorsByStationIdQuery,
+} from '../store/api/giosApi'
+import {
+  Sensors,
+  AirIndex,
+  Id,
+  IndexName,
+  Maybe,
+  Date,
+  Station,
+} from '../types'
 
-export const convert = (sensors: Sensors, airIndex: AirIndex) => {
-  const data = sensors.map((sensor) => {
-    switch (sensor.param.paramCode) {
-      case 'NO2': {
-        return {
-          ...sensor,
-          calcDate: airIndex.no2CalcDate,
-          sourceDate: airIndex.no2SourceDataDate,
-          levelName: airIndex.no2IndexLevel!.indexLevelName,
-        }
+export interface IndexSensor {
+  id: Id
+  code: string
+  name: string
+  status: IndexName
+  date: Maybe<Date>
+}
+
+export const convertToIndexSensors = (
+  sensors: Sensors,
+  airIndex: AirIndex
+): IndexSensor[] => {
+  return sensors.map((sensor) => {
+    const { id, param } = sensor
+    const { paramCode, paramName } = param
+    const { no2, o3, pm10, pm25, so2 } = airIndex
+
+    const body = {
+      id,
+      code: paramCode,
+      name: paramName,
+    }
+
+    if (no2 && paramCode === 'NO2') {
+      return {
+        ...body,
+        status: no2.indexLevelName,
+        date: no2.sourceDate,
       }
-      case 'O3': {
-        return {
-          ...sensor,
-          calcDate: airIndex.o3CalcDate,
-          sourceDate: airIndex.o3SourceDataDate,
-          levelName: airIndex.o3IndexLevel!.indexLevelName,
-        }
+    }
+    if (o3 && paramCode === 'O3') {
+      return {
+        ...body,
+        status: o3.indexLevelName,
+        date: o3.sourceDate,
       }
-      case 'SO2': {
-        return {
-          ...sensor,
-          calcDate: airIndex.so2CalcDate,
-          sourceDate: airIndex.so2SourceDataDate,
-          levelName: airIndex.so2IndexLevel!.indexLevelName,
-        }
+    }
+    if (pm10 && paramCode === 'PM10') {
+      return {
+        ...body,
+        status: pm10.indexLevelName,
+        date: pm10.sourceDate,
       }
-      case 'PM2.5': {
-        return {
-          ...sensor,
-          calcDate: airIndex.pm25CalcDate,
-          sourceDate: airIndex.pm25SourceDataDate,
-          levelName: airIndex.pm25IndexLevel!.indexLevelName,
-        }
+    }
+
+    if (pm25 && paramCode === 'PM2.5') {
+      return {
+        ...body,
+        status: pm25.indexLevelName,
+        date: pm25.sourceDate,
       }
-      case 'PM10': {
-        return {
-          ...sensor,
-          calcDate: airIndex.pm10CalcDate,
-          sourceDate: airIndex.pm10SourceDataDate,
-          levelName: airIndex.pm10IndexLevel!.indexLevelName,
-        }
+    }
+    if (so2 && paramCode === 'SO2') {
+      return {
+        ...body,
+        status: so2.indexLevelName,
+        date: so2.sourceDate,
       }
-      case 'C6H6': {
-        return {
-          //   ...sensor,
-          //   calcDate: airIndex.cCalcDate,
-          //   sourceDate: airIndex.no2SourceDataDate,
-          //   levelName: airIndex.no2IndexLevel!.indexLevelName,
-        }
-      }
-      case 'CO': {
-        return {
-          ...sensor,
-          calcDate: airIndex.coCalcDate,
-          sourceDate: airIndex.coSourceDataDate,
-          levelName: airIndex.no2IndexLevel!.indexLevelName,
-        }
-      }
-      default:
-        throw new Error(
-          `Unknown param ${sensor.param.paramCode}. Request for update.`
-        )
+    }
+
+    // sensor without known index
+    return {
+      ...body,
+      status: 'Brak indeksu',
+      date: null,
     }
   })
+}
+
+export const useGetIndexSensors = (station: Station) => {
+  const sensors = useGetSensorsByStationIdQuery({
+    stationId: station.id,
+  })
+  const airIndex = useGetAirIndexByStationIdQuery({
+    stationId: station.id,
+  })
+
+  const isLoading = sensors.isLoading || airIndex.isLoading
+  const isError = sensors.isError || airIndex.isError
+
+  return {
+    isLoading,
+    isError,
+    data:
+      isLoading || isError
+        ? undefined
+        : convertToIndexSensors(sensors.data!, airIndex.data!),
+  }
 }

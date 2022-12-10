@@ -1,6 +1,6 @@
 export type Id = number
-type Date = string
-type Maybe<T> = T | null
+export type Date = string
+export type Maybe<T> = T | null
 
 export interface City {
   id: Id
@@ -48,7 +48,7 @@ export interface Measurements {
   values: Measurement[]
 }
 
-type IndexName =
+export type IndexName =
   | 'Brak indeksu'
   | 'Bardzo dobry'
   | 'Dobry'
@@ -64,29 +64,23 @@ export interface AirIndexLevel {
 
 export interface AirIndexRaw {
   id: Id
-  // st
   stCalcDate: Date
   stIndexLevel: AirIndexLevel
   stSourceDataDate: Date
   stIndexStatus: boolean
   stIndexCrParam: string
-  // so2
   so2CalcDate: Maybe<Date>
   so2IndexLevel: Maybe<AirIndexLevel>
   so2SourceDataDate: Maybe<Date>
-  // no2
   no2CalcDate: Maybe<Date>
   no2IndexLevel: Maybe<AirIndexLevel>
   no2SourceDataDate: Maybe<Date>
-  // pm10
   pm10CalcDate: Maybe<Date>
   pm10IndexLevel: Maybe<AirIndexLevel>
   pm10SourceDataDate: Maybe<Date>
-  // pm25
   pm25CalcDate: Maybe<Date>
   pm25IndexLevel: Maybe<AirIndexLevel>
   pm25SourceDataDate: Maybe<Date>
-  // o3
   o3CalcDate: Maybe<Date>
   o3IndexLevel: Maybe<AirIndexLevel>
   o3SourceDataDate: Maybe<Date>
