@@ -1,8 +1,8 @@
 import { memo } from 'react'
-import { AirIndex } from '../types'
+import { AirIndexRaw } from '../types'
 
 interface Props {
-  airIndex: AirIndex
+  airIndex: AirIndexRaw
 }
 
 export const AirIndexDetails = ({ airIndex }: Props) => {

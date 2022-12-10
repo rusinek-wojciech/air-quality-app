@@ -10,7 +10,7 @@ export const SensorDetails = ({ sensor }: Props) => {
   const { paramFormula, paramName } = param
 
   return (
-    <div className='shadow-lg w-max whitespace-nowrap bg-green-600 border-4 border-green-800 rounded-full text-neutral-200 p-2 flex flex-none flex-row '>
+    <div className='ease-in-out duration-300 hover:scale-105 hover:cursor-pointer shadow-lg w-max whitespace-nowrap bg-green-600 border-4 border-green-800 rounded-full text-neutral-200 p-2 flex flex-none flex-row '>
       <p className='basis-1/2 px-2 font-bold'>{paramFormula}</p>
       <p className='basis-1/2 px-2'>{paramName}</p>
     </div>

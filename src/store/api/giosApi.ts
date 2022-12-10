@@ -1,6 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { endpoint } from '../../config'
-import { AirIndex, Id, Measurements, Sensors, Stations } from '../../types'
+import {
+  AirIndex,
+  AirIndexRaw,
+  Id,
+  Measurements,
+  Sensors,
+  Stations,
+} from '../../types'
+import { convertAirIndex } from './utils'
 
 type GetStationsResponse = Stations
 type GetStationsPayload = void
@@ -11,6 +19,7 @@ type GetSensorsByStationIdPayload = { stationId: Id }
 type GetMeasurementsBySensorIdResponse = Measurements
 type GetMeasurementsBySensorIdPayload = { sensorId: Id }
 
+type GetAirIndexByStationIdRawResponse = AirIndexRaw
 type GetAirIndexByStationIdResponse = AirIndex
 type GetAirIndexByStationIdPayload = { stationId: Id }
 
@@ -63,6 +72,9 @@ export const giosApi = createApi({
         return result
           ? [{ type: 'AirIndecies', id: result.id }]
           : ['AirIndecies']
+      },
+      transformResponse: (response: GetAirIndexByStationIdRawResponse) => {
+        return convertAirIndex(response)
       },
     }),
   }),

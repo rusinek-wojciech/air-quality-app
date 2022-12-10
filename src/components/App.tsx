@@ -1,13 +1,6 @@
-import {
-  useGetAirIndexByStationIdQuery,
-  useGetMeasurementsBySensorIdQuery,
-  useGetSensorsByStationIdQuery,
-  useGetStationsQuery,
-} from '../store/api/giosApi'
-import { AirIndex, Sensor, Station } from '../types'
+import { useGetStationsQuery } from '../store/api/giosApi'
+import { Station } from '../types'
 import { useState } from 'react'
-import { SensorDetails, SensorDetailsMemo } from './SensorDetails'
-import { AirIndexDetails, AirIndexDetailsMemo } from './AirIndexDetails'
 import { StationDetails } from './StationDetails'
 import { Modal } from './Modal'
 
