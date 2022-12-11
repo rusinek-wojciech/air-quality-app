@@ -4,13 +4,15 @@ import { IndexSensor } from './utils'
 
 interface Props {
   indexSensor: IndexSensor
+  onClick: () => void
 }
 
-export const SensorDetails = ({ indexSensor }: Props) => {
+export const SensorDetails = ({ indexSensor, onClick }: Props) => {
   const { code, name, status } = indexSensor
 
   return (
     <div
+      onClick={onClick}
       className={clsx(
         'ease-in-out duration-300 hover:scale-105 hover:cursor-pointer',
         'border-4 rounded-2xl shadow-lg w-max p-2',
