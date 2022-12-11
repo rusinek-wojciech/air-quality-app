@@ -1,40 +1,41 @@
-import { sortBy } from 'lodash'
-import uniqBy from 'lodash/uniqBy'
+import { sortBy, uniq } from 'lodash'
 import { Station, Stations } from '../../types'
 
-export type Value = {
-  value: Station
+export type Option<T = string> = {
+  value: T
   label: string
 }
 
-export const createProvinceOptions = (stations: Stations): Value[] => {
-  const unique = uniqBy(stations, (s) => s.city.commune.provinceName)
-  const options = unique.map((s) => ({
-    value: s,
-    label: s.city.commune.provinceName,
-  }))
-  return sortBy(options, (o) => o.label)
+export const createProvinceOptions = (stations: Stations): Option[] => {
+  const provinces = stations.map((s) => s.city.commune.provinceName)
+  return uniq(provinces)
+    .sort()
+    .map((s) => ({
+      value: s,
+      label: s,
+    }))
 }
 
 export const createCityOptions = (
   stations: Stations,
   provinceName: string
-): Value[] => {
+): Option[] => {
   const filteredStations = stations.filter(
     (s) => s.city.commune.provinceName === provinceName
   )
-  const unique = uniqBy(filteredStations, (s) => s.city.name)
-  const options = unique.map((s) => ({
-    value: s,
-    label: s.city.name,
-  }))
-  return sortBy(options, (o) => o.label)
+  const cities = filteredStations.map((s) => s.city.name)
+  return uniq(cities)
+    .sort()
+    .map((s) => ({
+      value: s,
+      label: s,
+    }))
 }
 
 export const createAddressOptions = (
   stations: Stations,
   cityName: string
-): Value[] => {
+): Option<Station>[] => {
   const filteredStations = stations.filter((s) => s.city.name === cityName)
   const options = filteredStations.map((s) => ({
     value: s,

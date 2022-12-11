@@ -5,34 +5,33 @@ import {
   createAddressOptions,
   createCityOptions,
   createProvinceOptions,
-  Value,
+  Option,
 } from './utils'
 
 type Action =
-  | { type: 'province'; payload: { value: Maybe<Value>; stations: Stations } }
-  | { type: 'city'; payload: { value: Maybe<Value>; stations: Stations } }
-  | { type: 'address'; payload: { value: Maybe<Value>; stations: Stations } }
+  | { type: 'province'; payload: { option: Option; stations: Stations } }
+  | { type: 'city'; payload: { option: Option; stations: Stations } }
+  | {
+      type: 'address'
+      payload: { option: Option<Station>; stations: Stations }
+    }
 
 interface State {
-  province: Maybe<Value>
-  provinces: Value[]
-  city: Maybe<Value>
-  cities: Value[]
-  address: Maybe<Value>
-  addresses: Value[]
+  province: Maybe<Option>
+  provinces: Option[]
+  city: Maybe<Option>
+  cities: Option[]
+  address: Maybe<Option<Station>>
+  addresses: Option<Station>[]
 }
 
-const reducer = (state: State, action: Action): State => {
-  const { type, payload } = action
+const reducer = (state: State, { type, payload }: Action): State => {
   switch (type) {
     case 'province': {
-      const newItems = createCityOptions(
-        payload.stations,
-        payload.value!.value.city.commune.provinceName
-      )
+      const newItems = createCityOptions(payload.stations, payload.option.value)
       return {
         ...state,
-        province: payload.value,
+        province: payload.option,
         city: newItems.length === 1 ? newItems[0] : null,
         cities: newItems,
         address: null,
@@ -42,11 +41,11 @@ const reducer = (state: State, action: Action): State => {
     case 'city': {
       const newItems = createAddressOptions(
         payload.stations,
-        payload.value!.value.city.name
+        payload.option.value
       )
       return {
         ...state,
-        city: payload.value,
+        city: payload.option,
         address: newItems.length === 1 ? newItems[0] : null,
         addresses: newItems,
       }
@@ -54,7 +53,7 @@ const reducer = (state: State, action: Action): State => {
     case 'address': {
       return {
         ...state,
-        address: payload.value,
+        address: payload.option,
       }
     }
   }
@@ -80,10 +79,13 @@ export const StationPicker = ({ stations, onPickStation }: Props) => {
     onPickStation(address ? address.value : null)
   }, [address])
 
-  const handleChange = (value: Maybe<Value>, meta: ActionMeta<Value>) => {
+  const handleChange = (
+    option: Maybe<Option> | Maybe<Option<Station>>,
+    meta: ActionMeta<Option> | ActionMeta<Option<Station>>
+  ) => {
     dispatch({
       type: meta.name as Action['type'],
-      payload: { value, stations },
+      payload: { option, stations } as any,
     })
   }
 
