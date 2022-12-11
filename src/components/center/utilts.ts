@@ -1,29 +1,9 @@
-import {
-  useGetAirIndexByStationIdQuery,
-  useGetSensorsByStationIdQuery,
-} from '../store/api/giosApi'
-import {
-  Sensors,
-  AirIndex,
-  Id,
-  IndexName,
-  Maybe,
-  Date,
-  Station,
-} from '../types'
+import { Sensors, AirIndex, Station, AirSensors } from '../../types'
 
-export interface IndexSensor {
-  id: Id
-  code: string
-  name: string
-  status: IndexName
-  date: Maybe<Date>
-}
-
-export const convertToIndexSensors = (
+export const convertToAirSensors = (
   sensors: Sensors,
   airIndex: AirIndex
-): IndexSensor[] => {
+): AirSensors => {
   return sensors.map((sensor) => {
     const { id, param } = sensor
     const { paramCode, paramName } = param
@@ -81,23 +61,15 @@ export const convertToIndexSensors = (
   })
 }
 
-export const useGetIndexSensors = (station: Station) => {
-  const sensors = useGetSensorsByStationIdQuery({
-    stationId: station.id,
-  })
-  const airIndex = useGetAirIndexByStationIdQuery({
-    stationId: station.id,
-  })
-
-  const isLoading = sensors.isLoading || airIndex.isLoading
-  const isError = sensors.isError || airIndex.isError
-
+export const getStationDetails = (station: Station) => {
+  const { provinceName, districtName, communeName } = station.city.commune
+  const cityName = station.city.name
   return {
-    isLoading,
-    isError,
-    data:
-      isLoading || isError
-        ? undefined
-        : convertToIndexSensors(sensors.data!, airIndex.data!),
+    provinceName,
+    commune: cityName === communeName ? '-' : communeName,
+    district: communeName === districtName ? '-' : districtName,
+    cityName,
+    street: station.addressStreet ?? '-',
+    stationName: station.stationName,
   }
 }

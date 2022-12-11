@@ -113,3 +113,13 @@ export interface ErrorResponse {
   message: string
   path: string
 }
+
+export interface AirSensor {
+  id: Id
+  code: string
+  name: string
+  status: IndexName
+  date: Maybe<Date>
+}
+
+export type AirSensors = AirSensor[]

@@ -61,11 +61,11 @@ const reducer = (state: State, { type, payload }: Action): State => {
 
 interface Props {
   stations: Stations
-  onPickStation: (station: Maybe<Station>) => void
+  onSelect: (station: Maybe<Station>) => void
 }
 
-export const StationPicker = ({ stations, onPickStation }: Props) => {
-  const initial = useMemo(
+export const SelectStation = ({ stations, onSelect }: Props) => {
+  const initial: State = useMemo(
     () => ({
       province: null,
       provinces: createProvinceOptions(stations),
@@ -81,7 +81,7 @@ export const StationPicker = ({ stations, onPickStation }: Props) => {
     useReducer(reducer, initial)
 
   useEffect(() => {
-    onPickStation(address ? address.value : null)
+    onSelect(address ? address.value : null)
   }, [address])
 
   const handleChange = (
@@ -98,6 +98,7 @@ export const StationPicker = ({ stations, onPickStation }: Props) => {
     <div>
       <Select
         name='province'
+        placeholder='Województwo...'
         isDisabled={!provinces.length}
         value={province}
         options={provinces}
@@ -106,6 +107,7 @@ export const StationPicker = ({ stations, onPickStation }: Props) => {
       />
       <Select
         name='city'
+        placeholder='Miejscowość...'
         isDisabled={!cities.length}
         value={city}
         options={cities}
@@ -113,6 +115,7 @@ export const StationPicker = ({ stations, onPickStation }: Props) => {
       />
       <Select
         name='address'
+        placeholder='Adres...'
         isDisabled={!addresses.length}
         value={address}
         options={addresses}

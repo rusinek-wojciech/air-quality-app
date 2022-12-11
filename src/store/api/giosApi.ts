@@ -70,6 +70,10 @@ export const giosApi = createApi({
           ? [{ type: 'Measurements', id: arg.sensorId }]
           : ['Measurements']
       },
+      transformResponse: (response: GetMeasurementsBySensorIdResponse) => {
+        response.values.reverse()
+        return response
+      },
     }),
     getAirIndexByStationId: builder.query<
       GetAirIndexByStationIdResponse,

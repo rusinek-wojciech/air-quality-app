@@ -1,14 +1,13 @@
 import clsx from 'clsx'
-import { memo } from 'react'
-import { IndexSensor } from './utils'
+import { AirSensor } from '../../types'
 
 interface Props {
-  indexSensor: IndexSensor
+  airSensor: AirSensor
   onClick: () => void
 }
 
-export const SensorDetails = ({ indexSensor, onClick }: Props) => {
-  const { code, name, status } = indexSensor
+export const AirSensorChip = ({ airSensor, onClick }: Props) => {
+  const { code, name, status } = airSensor
 
   return (
     <div
@@ -35,8 +34,3 @@ export const SensorDetails = ({ indexSensor, onClick }: Props) => {
     </div>
   )
 }
-
-export const SensorDetailsMemo = memo(
-  SensorDetails,
-  (prev, next) => prev.indexSensor.id === next.indexSensor.id
-)
