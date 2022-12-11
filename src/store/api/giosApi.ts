@@ -8,7 +8,7 @@ import {
   Sensors,
   Stations,
 } from '../../types'
-import { convertAirIndex } from './utils'
+import { capitalizeFirstLetter, convertAirIndex } from './utils'
 
 type GetStationsResponse = Stations
 type GetStationsPayload = void
@@ -39,6 +39,14 @@ export const giosApi = createApi({
         return result
           ? [...result.map(({ id }) => ({ type: 'Stations' as const, id }))]
           : ['Stations']
+      },
+      transformResponse: (response: GetStationsResponse) => {
+        response.forEach((station) => {
+          station.city.commune.provinceName = capitalizeFirstLetter(
+            station.city.commune.provinceName
+          )
+        })
+        return response
       },
     }),
     getSensorsByStationId: builder.query<
