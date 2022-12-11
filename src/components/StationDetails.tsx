@@ -20,16 +20,31 @@ export const StationDetails = ({ station }: Props) => {
     setSelectedSensor(indexSensor)
   }
 
+  const { provinceName, districtName, communeName } = station.city.commune
+  const cityName = station.city.name
+
+  const commune = cityName === communeName ? '-' : communeName
+  const district = communeName === districtName ? '-' : districtName
+
   return (
     <div>
       <div>
-        <h2 className='text-xl'>{station.stationName}</h2>
+        <h2 className='text-xl py-2'>{station.stationName}</h2>
       </div>
       {isLoading ? (
         <p>Loading...</p>
       ) : (
         <div>
-          <h3 className='text-lg pb-2'>
+          <h3 className='text-lg py-2'>Informacje o stacji pomiarowej</h3>
+          <div>
+            <p>Województwo: {provinceName}</p>
+            <p>Powiat: {district}</p>
+            <p>Gmina: {commune}</p>
+            <p>Miasto: {cityName}</p>
+            <p>Adres: {station.addressStreet}</p>
+          </div>
+
+          <h3 className='text-lg py-2'>
             Czujniki dostępne na stacji pomiarowej
           </h3>
 

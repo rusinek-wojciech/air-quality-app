@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useGetStationsQuery } from '../store/api/giosApi'
 import { Station } from '../types'
 import { StationPicker } from './input/StationPicker'
+import { StationDetails } from './StationDetails'
 
 export const App = () => {
   const { data: stations, isLoading, isError } = useGetStationsQuery()
@@ -14,8 +15,8 @@ export const App = () => {
   console.log(selectedStation)
 
   return (
-    <div className='flex min-h-screen'>
-      <div className='flex-1'>
+    <div className='flex min-h-screen flex-wrap'>
+      <div className='flex-1 p-4'>
         {!!stations && (
           <StationPicker
             stations={stations}
@@ -23,7 +24,10 @@ export const App = () => {
           />
         )}
       </div>
-      <div className='flex-1'></div>
+      <div className='flex-1 p-4'>
+        {!!selectedStation && <StationDetails station={selectedStation} />}
+      </div>
+      <div className='flex-1 p-4'>tesst</div>
     </div>
   )
 }
