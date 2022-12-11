@@ -1,24 +1,14 @@
-import { useState } from 'react'
-import { useGetMeasurementsBySensorIdQuery } from '../store/api/giosApi'
-import { AirIndex, Sensor, Sensors, Station } from '../types'
+import { Station } from '../types'
 import { SensorDetailsMemo } from './SensorDetails'
 import { IndexSensor, useGetIndexSensors } from './utils'
 
 interface Props {
   station: Station
+  onSelectSensor: (indexSensor: IndexSensor) => void
 }
 
-export const StationDetails = ({ station }: Props) => {
-  const [selectedSensor, setSelectedSensor] = useState<IndexSensor | null>(null)
+export const StationDetails = ({ station, onSelectSensor }: Props) => {
   const { isLoading, isError, data } = useGetIndexSensors(station)
-  const x = useGetMeasurementsBySensorIdQuery(
-    { sensorId: selectedSensor?.id! },
-    { skip: !selectedSensor }
-  )
-
-  const handleSensorClick = (indexSensor: IndexSensor) => () => {
-    setSelectedSensor(indexSensor)
-  }
 
   const { provinceName, districtName, communeName } = station.city.commune
   const cityName = station.city.name
@@ -26,6 +16,9 @@ export const StationDetails = ({ station }: Props) => {
   const commune = cityName === communeName ? '-' : communeName
   const district = communeName === districtName ? '-' : districtName
   const street = station.addressStreet ?? '-'
+
+  const handleSelectSensor = (indexSensor: IndexSensor) => (): void =>
+    onSelectSensor(indexSensor)
 
   return (
     <div>
@@ -54,7 +47,7 @@ export const StationDetails = ({ station }: Props) => {
               <SensorDetailsMemo
                 key={indexSensor.id}
                 indexSensor={indexSensor}
-                onClick={handleSensorClick(indexSensor)}
+                onClick={handleSelectSensor(indexSensor)}
               />
             ))}
           </div>
@@ -62,11 +55,4 @@ export const StationDetails = ({ station }: Props) => {
       )}
     </div>
   )
-}
-
-const convertDateStr = (dateStr: string) => {
-  const d = new Date(dateStr)
-  const date = d.toLocaleDateString()
-  const time = d.toLocaleTimeString()
-  return `${date} ${time}`
 }

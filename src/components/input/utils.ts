@@ -1,5 +1,6 @@
-import { sortBy, uniq } from 'lodash'
 import { Station, Stations } from '../../types'
+import sortBy from 'lodash/sortBy'
+import uniq from 'lodash/uniq'
 
 export type Option<T = string> = {
   value: T
