@@ -70,6 +70,5 @@ export const getStationDetails = (station: Station) => {
     district: communeName === districtName ? '-' : districtName,
     cityName,
     street: station.addressStreet ?? '-',
-    stationName: station.stationName,
   }
 }
