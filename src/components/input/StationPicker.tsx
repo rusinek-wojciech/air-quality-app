@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react'
+import { useEffect, useMemo, useReducer } from 'react'
 import Select, { ActionMeta } from 'react-select'
 import { Maybe, Station, Stations } from '../../types'
 import {
@@ -65,15 +65,20 @@ interface Props {
 }
 
 export const StationPicker = ({ stations, onPickStation }: Props) => {
-  const [{ province, provinces, city, cities, address, addresses }, dispatch] =
-    useReducer(reducer, {
+  const initial = useMemo(
+    () => ({
       province: null,
       provinces: createProvinceOptions(stations),
       city: null,
       cities: [],
       address: null,
       addresses: [],
-    })
+    }),
+    [stations]
+  )
+
+  const [{ province, provinces, city, cities, address, addresses }, dispatch] =
+    useReducer(reducer, initial)
 
   useEffect(() => {
     onPickStation(address ? address.value : null)
