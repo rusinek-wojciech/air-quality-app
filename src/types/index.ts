@@ -18,7 +18,7 @@ export interface Station {
   gegrLat: string
   gegrLon: string
   city: City
-  addressStreet: string
+  addressStreet: Maybe<string>
 }
 
 export type Stations = Station[]

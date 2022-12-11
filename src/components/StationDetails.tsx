@@ -25,6 +25,7 @@ export const StationDetails = ({ station }: Props) => {
 
   const commune = cityName === communeName ? '-' : communeName
   const district = communeName === districtName ? '-' : districtName
+  const street = station.addressStreet ?? '-'
 
   return (
     <div>
@@ -41,7 +42,7 @@ export const StationDetails = ({ station }: Props) => {
             <p>Powiat: {district}</p>
             <p>Gmina: {commune}</p>
             <p>Miasto: {cityName}</p>
-            <p>Adres: {station.addressStreet}</p>
+            <p>Adres: {street}</p>
           </div>
 
           <h3 className='text-lg py-2'>

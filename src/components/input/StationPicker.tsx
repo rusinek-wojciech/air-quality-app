@@ -1,122 +1,115 @@
-import { useEffect, useMemo, useState } from 'react'
-import Select, { SingleValue } from 'react-select'
-import { Station, Stations } from '../../types'
-import { capitalizeFirstLetter } from './utils'
-import uniqBy from 'lodash/uniqBy'
-import { add, sortBy } from 'lodash'
+import { useEffect, useReducer } from 'react'
+import Select, { ActionMeta } from 'react-select'
+import { Maybe, Station, Stations } from '../../types'
+import {
+  createAddressOptions,
+  createCityOptions,
+  createProvinceOptions,
+  Value,
+} from './utils'
+
+type Action =
+  | { type: 'province'; payload: { value: Maybe<Value>; stations: Stations } }
+  | { type: 'city'; payload: { value: Maybe<Value>; stations: Stations } }
+  | { type: 'address'; payload: { value: Maybe<Value>; stations: Stations } }
+
+interface State {
+  province: Maybe<Value>
+  provinces: Value[]
+  city: Maybe<Value>
+  cities: Value[]
+  address: Maybe<Value>
+  addresses: Value[]
+}
+
+const reducer = (state: State, action: Action): State => {
+  const { type, payload } = action
+  switch (type) {
+    case 'province': {
+      const newItems = createCityOptions(
+        payload.stations,
+        payload.value!.value.city.commune.provinceName
+      )
+      return {
+        ...state,
+        province: payload.value,
+        city: newItems.length === 1 ? newItems[0] : null,
+        cities: newItems,
+        address: null,
+        addresses: [],
+      }
+    }
+    case 'city': {
+      const newItems = createAddressOptions(
+        payload.stations,
+        payload.value!.value.city.name
+      )
+      return {
+        ...state,
+        city: payload.value,
+        address: newItems.length === 1 ? newItems[0] : null,
+        addresses: newItems,
+      }
+    }
+    case 'address': {
+      return {
+        ...state,
+        address: payload.value,
+      }
+    }
+  }
+}
 
 interface Props {
   stations: Stations
-  onPickStation: (station: Station) => void
-}
-
-type Value = SingleValue<{
-  value: Station
-  label: string
-}>
-
-interface Selected {
-  province: Value
-  city: Value
-  address: Value
-}
-
-const initial: Selected = {
-  province: null,
-  city: null,
-  address: null,
+  onPickStation: (station: Maybe<Station>) => void
 }
 
 export const StationPicker = ({ stations, onPickStation }: Props) => {
-  const [selected, setSelected] = useState<Selected>(initial)
-
-  const provinces = useMemo(() => {
-    const optionsProvinces = uniqBy(
-      stations,
-      (s) => s.city.commune.provinceName
-    ).map((s) => ({
-      value: s,
-      label: capitalizeFirstLetter(s.city.commune.provinceName),
-    }))
-    return sortBy(optionsProvinces, (o) => o.label)
-  }, [stations])
-
-  const cities = useMemo(() => {
-    if (!selected.province) {
-      return []
-    }
-    const filteredStations = stations.filter(
-      (s) =>
-        s.city.commune.provinceName ===
-        selected.province?.value.city.commune.provinceName
-    )
-    const optionsProvinces = uniqBy(filteredStations, (s) => s.city.name).map(
-      (s) => ({
-        value: s,
-        label: capitalizeFirstLetter(s.city.name),
-      })
-    )
-    return sortBy(optionsProvinces, (o) => o.label)
-  }, [stations, selected.province])
-
-  const addresses = useMemo(() => {
-    if (!selected.city) {
-      return []
-    }
-    const filteredStations = stations.filter(
-      (s) => s.city.name === selected.city?.value.city.name
-    )
-    const optionsProvinces = uniqBy(
-      filteredStations,
-      (s) => s.addressStreet
-    ).map((s) => ({
-      value: s,
-      label: capitalizeFirstLetter(s.addressStreet),
-    }))
-    return sortBy(optionsProvinces, (o) => o.label)
-  }, [stations, selected.city])
+  const [{ province, provinces, city, cities, address, addresses }, dispatch] =
+    useReducer(reducer, {
+      province: null,
+      provinces: createProvinceOptions(stations),
+      city: null,
+      cities: [],
+      address: null,
+      addresses: [],
+    })
 
   useEffect(() => {
-    if (provinces.length === 1) {
-      setSelected({ ...selected, province: provinces[0] })
-    }
-    if (cities.length === 1) {
-      setSelected({ ...selected, city: cities[0] })
-    }
-    if (addresses.length === 1) {
-      const newSelected = { ...selected, address: addresses[0] }
-      setSelected(newSelected)
-      onPickStation(newSelected.address.value)
-    }
-  }, [addresses])
+    onPickStation(address ? address.value : null)
+  }, [address])
+
+  const handleChange = (value: Maybe<Value>, meta: ActionMeta<Value>) => {
+    dispatch({
+      type: meta.name as Action['type'],
+      payload: { value, stations },
+    })
+  }
 
   return (
     <div>
       <Select
-        autoFocus
+        name='province'
         isDisabled={!provinces.length}
-        value={selected.province}
+        value={province}
         options={provinces}
-        onChange={(e) =>
-          setSelected({ ...selected, province: e, city: null, address: null })
-        }
+        onChange={handleChange}
+        autoFocus
       />
       <Select
+        name='city'
         isDisabled={!cities.length}
-        value={selected.city}
+        value={city}
         options={cities}
-        onChange={(e) => setSelected({ ...selected, city: e, address: null })}
+        onChange={handleChange}
       />
       <Select
+        name='address'
         isDisabled={!addresses.length}
-        value={selected.address}
+        value={address}
         options={addresses}
-        onChange={(e) => {
-          setSelected({ ...selected, address: e })
-          if (e) {
-            onPickStation(e.value)
-          }
-        }}
+        onChange={handleChange}
       />
     </div>
   )

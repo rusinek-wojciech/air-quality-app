@@ -1,18 +1,21 @@
 import { useState } from 'react'
 import { useGetStationsQuery } from '../store/api/giosApi'
-import { Station } from '../types'
+import { Maybe, Station } from '../types'
 import { StationPicker } from './input/StationPicker'
 import { StationDetails } from './StationDetails'
 
 export const App = () => {
   const { data: stations, isLoading, isError } = useGetStationsQuery()
-  const [selectedStation, setSelectedStation] = useState<Station | null>(null)
+  const [selectedStation, setSelectedStation] = useState<Maybe<Station>>(null)
 
-  const handlePickStation = (station: Station) => {
+  const handlePickStation = (station: Maybe<Station>) => {
     setSelectedStation(station)
+    console.log('GOOD', station)
   }
 
-  console.log(selectedStation)
+  if (stations) {
+    console.log(stations.filter((station) => !station.addressStreet))
+  }
 
   return (
     <div className='flex min-h-screen flex-wrap'>
