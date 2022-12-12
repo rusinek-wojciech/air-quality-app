@@ -2,7 +2,7 @@ import {
   useGetSensorsByStationIdQuery,
   useGetAirIndexByStationIdQuery,
 } from '../../store/api/giosApi'
-import { AirSensor, Station } from '../../types'
+import { Station } from '../../types'
 import { Handler } from '../common/Handler'
 import { SensorsSection } from './SensorsSection'
 import { StationSection } from './StationSection'
@@ -10,10 +10,9 @@ import { Title } from './Title'
 
 interface Props {
   station: Station
-  onSelectSensor: (airSensor: AirSensor) => void
 }
 
-export const StationDetails = ({ station, onSelectSensor }: Props) => {
+export const StationDetails = ({ station }: Props) => {
   const sensors = useGetSensorsByStationIdQuery({
     stationId: station.id,
   })
@@ -29,11 +28,7 @@ export const StationDetails = ({ station, onSelectSensor }: Props) => {
     <Handler isLoading={isLoading} isError={isError}>
       <Title title={station.stationName} />
       <StationSection station={station} />
-      <SensorsSection
-        sensors={sensors.data!}
-        airIndex={airIndex.data!}
-        onClickSensor={onSelectSensor}
-      />
+      <SensorsSection sensors={sensors.data!} airIndex={airIndex.data!} />
     </Handler>
   )
 }

@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useReducer } from 'react'
 import Select, { ActionMeta } from 'react-select'
+import { useAppDispatch } from '../../store/hooks'
+import { selectStation } from '../../store/slice/stationSlice'
 import { Maybe, Station, Stations } from '../../types'
 import {
   createAddressOptions,
@@ -61,10 +63,11 @@ const reducer = (state: State, { type, payload }: Action): State => {
 
 interface Props {
   stations: Stations
-  onSelect: (station: Maybe<Station>) => void
 }
 
-export const SelectStation = ({ stations, onSelect }: Props) => {
+export const SelectStation = ({ stations }: Props) => {
+  const appDispatch = useAppDispatch()
+
   const initial: State = useMemo(
     () => ({
       province: null,
@@ -81,7 +84,7 @@ export const SelectStation = ({ stations, onSelect }: Props) => {
     useReducer(reducer, initial)
 
   useEffect(() => {
-    onSelect(address ? address.value : null)
+    appDispatch(selectStation(address ? address.value : null))
   }, [address])
 
   const handleChange = (
