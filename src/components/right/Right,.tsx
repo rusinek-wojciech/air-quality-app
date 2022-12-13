@@ -1,16 +1,25 @@
+import { lazy, Suspense } from 'react'
 import { useAppSelector } from '../../store/hooks'
-import { GraphSection } from './GraphSection'
+import { Spinner } from '../common/Spinner'
+
+const GraphSection = lazy(() =>
+  import('./GraphSection').then((M) => ({
+    default: M.GraphSection,
+  }))
+)
 
 export const Right = () => {
   const airSensor = useAppSelector((state) => state.station.selectedAirSensor)
 
   return (
     <div className='flex-1 p-4 min-w-80'>
-      {airSensor ? (
-        <GraphSection airSensor={airSensor} />
-      ) : (
-        <p>Wybierz czujnik</p>
-      )}
+      <Suspense fallback={<Spinner />}>
+        {airSensor ? (
+          <GraphSection airSensor={airSensor} />
+        ) : (
+          <p>Wybierz czujnik</p>
+        )}
+      </Suspense>
     </div>
   )
 }

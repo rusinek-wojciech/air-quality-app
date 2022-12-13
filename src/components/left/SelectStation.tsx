@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useReducer } from 'react'
-import Select, { ActionMeta } from 'react-select'
+import { useState } from 'react'
+import Select from 'react-select'
 import { useAppDispatch } from '../../store/hooks'
 import { selectStation } from '../../store/slice/stationSlice'
 import { Maybe, Station, Stations } from '../../types'
@@ -9,14 +9,8 @@ import {
   createProvinceOptions,
   Option,
 } from './utils'
-
-type Action =
-  | { type: 'province'; payload: { option: Option; stations: Stations } }
-  | { type: 'city'; payload: { option: Option; stations: Stations } }
-  | {
-      type: 'address'
-      payload: { option: Option<Station>; stations: Stations }
-    }
+import { MdLocationCity } from 'react-icons/md'
+import { BsFillHouseFill } from 'react-icons/bs'
 
 interface State {
   province: Maybe<Option>
@@ -27,40 +21,6 @@ interface State {
   addresses: Option<Station>[]
 }
 
-const reducer = (state: State, { type, payload }: Action): State => {
-  switch (type) {
-    case 'province': {
-      const newItems = createCityOptions(payload.stations, payload.option.value)
-      return {
-        ...state,
-        province: payload.option,
-        city: newItems.length === 1 ? newItems[0] : null,
-        cities: newItems,
-        address: null,
-        addresses: [],
-      }
-    }
-    case 'city': {
-      const newItems = createAddressOptions(
-        payload.stations,
-        payload.option.value
-      )
-      return {
-        ...state,
-        city: payload.option,
-        address: newItems.length === 1 ? newItems[0] : null,
-        addresses: newItems,
-      }
-    }
-    case 'address': {
-      return {
-        ...state,
-        address: payload.option,
-      }
-    }
-  }
-}
-
 interface Props {
   stations: Stations
 }
@@ -68,62 +28,101 @@ interface Props {
 export const SelectStation = ({ stations }: Props) => {
   const appDispatch = useAppDispatch()
 
-  const initial: State = useMemo(
-    () => ({
-      province: null,
-      provinces: createProvinceOptions(stations),
-      city: null,
-      cities: [],
+  const [state, setState] = useState<State>(() => ({
+    province: null,
+    provinces: createProvinceOptions(stations),
+    city: null,
+    cities: [],
+    address: null,
+    addresses: [],
+  }))
+
+  const handleSubmit = (station: Maybe<Station>) => {
+    appDispatch(selectStation(station))
+  }
+
+  const handleProvinceChange = (option: Maybe<Option>) => {
+    const newCities = createCityOptions(stations, option!.value)
+    setState({
+      ...state,
+      province: option,
+      city: newCities.length === 1 ? newCities[0] : null,
+      cities: newCities,
       address: null,
       addresses: [],
-    }),
-    [stations]
-  )
-
-  const [{ province, provinces, city, cities, address, addresses }, dispatch] =
-    useReducer(reducer, initial)
-
-  useEffect(() => {
-    appDispatch(selectStation(address ? address.value : null))
-  }, [address])
-
-  const handleChange = (
-    option: Maybe<Option> | Maybe<Option<Station>>,
-    meta: ActionMeta<Option> | ActionMeta<Option<Station>>
-  ) => {
-    dispatch({
-      type: meta.name as Action['type'],
-      payload: { option, stations } as any,
     })
+    handleSubmit(null)
+  }
+
+  const handleCityChange = (option: Maybe<Option>) => {
+    const newAddresses = createAddressOptions(stations, option!.value)
+    const newAddress = newAddresses.length === 1 ? newAddresses[0] : null
+    setState({
+      ...state,
+      city: option,
+      address: newAddress,
+      addresses: newAddresses,
+    })
+    handleSubmit(newAddress ? newAddress.value : null)
+  }
+
+  const handleAddressChange = (option: Maybe<Option<Station>>) => {
+    setState({
+      ...state,
+      address: option,
+    })
+    handleSubmit(option!.value)
   }
 
   return (
-    <div>
-      <Select
-        name='province'
-        placeholder='Województwo...'
-        isDisabled={!provinces.length}
-        value={province}
-        options={provinces}
-        onChange={handleChange}
-        autoFocus
-      />
-      <Select
-        name='city'
-        placeholder='Miejscowość...'
-        isDisabled={!cities.length}
-        value={city}
-        options={cities}
-        onChange={handleChange}
-      />
-      <Select
-        name='address'
-        placeholder='Adres...'
-        isDisabled={!addresses.length}
-        value={address}
-        options={addresses}
-        onChange={handleChange}
-      />
+    <div className='flex flex-auto flex-col gap-2'>
+      <div className='flex flex-auto'>
+        <Select
+          name='province'
+          placeholder='Województwo...'
+          isDisabled={!state.provinces.length}
+          value={state.province}
+          options={state.provinces}
+          onChange={handleProvinceChange}
+          className='w-full'
+          autoFocus
+        />
+      </div>
+      <div className='flex flex-auto'>
+        <MdLocationCity />
+        <Select
+          name='city'
+          placeholder='Miejscowość...'
+          isDisabled={!state.cities.length}
+          value={state.city}
+          options={state.cities}
+          onChange={handleCityChange}
+          className='w-full'
+        />
+      </div>
+
+      <div className='flex flex-auto'>
+        <Icon>
+          <BsFillHouseFill />
+        </Icon>
+        <Select
+          name='address'
+          placeholder='Adres...'
+          isDisabled={!state.addresses.length}
+          value={state.address}
+          options={state.addresses}
+          onChange={handleAddressChange}
+          className='w-full'
+        />
+      </div>
+    </div>
+  )
+}
+
+const Icon = ({ children }: { children: JSX.Element }) => {
+  return (
+    <div className='rounded-full bg-red-600 flex justify-center align-middle aspect-square'>
+      <div className='relative h-1/2 w-1/2'>{children}</div>
     </div>
   )
 }
