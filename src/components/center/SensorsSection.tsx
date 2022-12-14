@@ -21,12 +21,13 @@ export const SensorsSection = ({ sensors, airIndex }: Props) => {
   return (
     <>
       <h3 className='text-lg py-2'>Czujniki dostępne na stacji pomiarowej</h3>
-      <div className='flex flex-wrap gap-3'>
+      <div className='flex flex-wrap gap-2'>
         {airSensors.map((airSensor) => (
           <AirSensorChip
             key={airSensor.id}
             airSensor={airSensor}
             onClick={() => handleAirSensorChipClick(airSensor)}
+            className='grow'
           />
         ))}
       </div>

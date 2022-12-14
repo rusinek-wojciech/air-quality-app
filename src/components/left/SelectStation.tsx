@@ -47,12 +47,37 @@ export const SelectStation = ({ stations }: Props) => {
     appDispatch(selectStation(station))
   }
 
+  const handleProvinceClick = () => {
+    const e = selectProvinceRef.current!
+    if (!e.props.isDisabled) {
+      e.focus()
+      e.openMenu('last')
+    }
+  }
+
+  const handleCityClick = () => {
+    const e = selectCityRef.current!
+    if (!e.props.isDisabled) {
+      e.focus()
+      e.openMenu('last')
+    }
+  }
+
+  const handleAddressClick = () => {
+    const e = selectAddressRef.current!
+    if (!e.props.isDisabled) {
+      e.focus()
+      e.openMenu('last')
+    }
+  }
+
   const handleProvinceChange = (option: Maybe<Option>) => {
     const newCities = createCityOptions(stations, option!.value)
+    const newCity = newCities.length === 1 ? newCities[0] : null
     setState({
       ...state,
       province: option,
-      city: newCities.length === 1 ? newCities[0] : null,
+      city: newCity,
       cities: newCities,
       address: null,
       addresses: [],
@@ -78,21 +103,6 @@ export const SelectStation = ({ stations }: Props) => {
       address: option,
     })
     handleSubmit(option!.value)
-  }
-
-  const handleProvinceClick = () => {
-    selectProvinceRef.current!.focus()
-    selectProvinceRef.current!.openMenu('last')
-  }
-
-  const handleCityClick = () => {
-    selectCityRef.current!.focus()
-    selectCityRef.current!.openMenu('last')
-  }
-
-  const handleAddressClick = () => {
-    selectAddressRef.current!.focus()
-    selectAddressRef.current!.openMenu('last')
   }
 
   return (
