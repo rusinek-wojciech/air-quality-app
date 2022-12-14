@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import Select from 'react-select'
+import { useRef, useState } from 'react'
+import Select, { SelectInstance } from 'react-select'
 import { useAppDispatch } from '../../store/hooks'
 import { selectStation } from '../../store/slice/stationSlice'
 import { Maybe, Station, Stations } from '../../types'
@@ -9,8 +9,10 @@ import {
   createProvinceOptions,
   Option,
 } from './utils'
-import { MdLocationCity } from 'react-icons/md'
+import { MdLocationCity, MdTerrain } from 'react-icons/md'
 import { BsFillHouseFill } from 'react-icons/bs'
+import clsx from 'clsx'
+import { IconCircle } from './IconCircle'
 
 interface State {
   province: Maybe<Option>
@@ -27,6 +29,10 @@ interface Props {
 
 export const SelectStation = ({ stations }: Props) => {
   const appDispatch = useAppDispatch()
+
+  const selectProvinceRef = useRef<SelectInstance<Maybe<Option>>>(null)
+  const selectCityRef = useRef<SelectInstance<Maybe<Option>>>(null)
+  const selectAddressRef = useRef<SelectInstance<Maybe<Option<Station>>>>(null)
 
   const [state, setState] = useState<State>(() => ({
     province: null,
@@ -74,55 +80,75 @@ export const SelectStation = ({ stations }: Props) => {
     handleSubmit(option!.value)
   }
 
+  const handleProvinceClick = () => {
+    selectProvinceRef.current!.focus()
+    selectProvinceRef.current!.openMenu('last')
+  }
+
+  const handleCityClick = () => {
+    selectCityRef.current!.focus()
+    selectCityRef.current!.openMenu('last')
+  }
+
+  const handleAddressClick = () => {
+    selectAddressRef.current!.focus()
+    selectAddressRef.current!.openMenu('last')
+  }
+
   return (
-    <div className='flex flex-auto flex-col gap-2'>
-      <div className='flex flex-auto'>
+    <div className='flex flex-col gap-2'>
+      <div className='flex flex-auto gap-2 cursor-pointer'>
+        <IconCircle onClick={handleProvinceClick} type='province'>
+          <MdTerrain />
+        </IconCircle>
         <Select
+          ref={selectProvinceRef}
           name='province'
           placeholder='Województwo...'
           isDisabled={!state.provinces.length}
           value={state.province}
           options={state.provinces}
           onChange={handleProvinceChange}
-          className='w-full'
+          className='flex-1 drop-shadow-md'
           autoFocus
+          menuPortalTarget={document.body}
+          menuPosition={'fixed'}
         />
       </div>
-      <div className='flex flex-auto'>
-        <MdLocationCity />
+      <div className='flex flex-auto gap-2 cursor-pointer'>
+        <IconCircle onClick={handleCityClick} type='city'>
+          <MdLocationCity />
+        </IconCircle>
         <Select
+          ref={selectCityRef}
           name='city'
           placeholder='Miejscowość...'
           isDisabled={!state.cities.length}
           value={state.city}
           options={state.cities}
           onChange={handleCityChange}
-          className='w-full'
+          className='flex-1 drop-shadow-md'
+          menuPortalTarget={document.body}
+          menuPosition={'fixed'}
         />
       </div>
-
-      <div className='flex flex-auto'>
-        <Icon>
+      <div className='flex flex-auto gap-2 cursor-pointer'>
+        <IconCircle onClick={handleAddressClick} type='address'>
           <BsFillHouseFill />
-        </Icon>
+        </IconCircle>
         <Select
+          ref={selectAddressRef}
           name='address'
           placeholder='Adres...'
           isDisabled={!state.addresses.length}
           value={state.address}
           options={state.addresses}
           onChange={handleAddressChange}
-          className='w-full'
+          className='flex-1 drop-shadow-md'
+          menuPortalTarget={document.body}
+          menuPosition={'fixed'}
         />
       </div>
-    </div>
-  )
-}
-
-const Icon = ({ children }: { children: JSX.Element }) => {
-  return (
-    <div className='rounded-full bg-red-600 flex justify-center align-middle aspect-square'>
-      <div className='relative h-1/2 w-1/2'>{children}</div>
     </div>
   )
 }
