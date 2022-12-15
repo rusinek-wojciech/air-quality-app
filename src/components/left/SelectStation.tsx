@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Select, { SelectInstance } from 'react-select'
 import { useAppDispatch } from '../../store/hooks'
 import { selectStation } from '../../store/slice/stationSlice'
@@ -13,6 +13,7 @@ import { MdLocationCity, MdTerrain } from 'react-icons/md'
 import { BsFillHouseFill } from 'react-icons/bs'
 import clsx from 'clsx'
 import { IconCircle } from './IconCircle'
+import { getClosestStation } from './location'
 
 interface State {
   province: Maybe<Option>
@@ -42,6 +43,18 @@ export const SelectStation = ({ stations }: Props) => {
     address: null,
     addresses: [],
   }))
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const [station, distance] = getClosestStation(stations, position)
+        console.log(`${station.city.name} - ${distance}`)
+      },
+      (error) => {
+        console.log(error)
+      }
+    )
+  }, [stations])
 
   const handleSubmit = (station: Maybe<Station>) => {
     appDispatch(selectStation(station))
