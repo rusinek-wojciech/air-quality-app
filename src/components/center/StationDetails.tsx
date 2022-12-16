@@ -27,8 +27,8 @@ export const StationDetails = ({ station }: Props) => {
   return (
     <Handler isLoading={isLoading} isError={isError}>
       <Title title={station.stationName} />
-      <StationSection station={station} />
       <SensorsSection sensors={sensors.data!} airIndex={airIndex.data!} />
+      <StationSection station={station} />
     </Handler>
   )
 }

@@ -1,64 +1,48 @@
-import { useEffect, useRef, useState } from 'react'
+import { MutableRefObject, useMemo, useRef, useState } from 'react'
 import Select, { SelectInstance } from 'react-select'
-import { useAppDispatch } from '../../store/hooks'
-import { selectStation } from '../../store/slice/stationSlice'
 import { Maybe, Station, Stations } from '../../types'
 import {
-  createAddressOptions,
-  createCityOptions,
-  createProvinceOptions,
+  queryAddresses,
+  queryCities,
+  queryProvinces,
   Option,
+  Selected as Selected,
+  initialSelected,
+  convertStationToSelected,
 } from './utils'
 import { MdLocationCity, MdTerrain } from 'react-icons/md'
 import { BsFillHouseFill } from 'react-icons/bs'
-import clsx from 'clsx'
 import { IconCircle } from './IconCircle'
-import { getClosestStation } from './location'
-
-interface State {
-  province: Maybe<Option>
-  provinces: Option[]
-  city: Maybe<Option>
-  cities: Option[]
-  address: Maybe<Option<Station>>
-  addresses: Option<Station>[]
-}
+import { useCacheMemo } from '../../hooks/useCacheMemo'
 
 interface Props {
   stations: Stations
+  onSubmit: (station: Maybe<Station>) => void
+  initialStation?: Station
 }
 
-export const SelectStation = ({ stations }: Props) => {
-  const appDispatch = useAppDispatch()
-
+export const SelectStation = ({
+  stations,
+  onSubmit,
+  initialStation,
+}: Props) => {
   const selectProvinceRef = useRef<SelectInstance<Maybe<Option>>>(null)
   const selectCityRef = useRef<SelectInstance<Maybe<Option>>>(null)
   const selectAddressRef = useRef<SelectInstance<Maybe<Option<Station>>>>(null)
 
-  const [state, setState] = useState<State>(() => ({
-    province: null,
-    provinces: createProvinceOptions(stations),
-    city: null,
-    cities: [],
-    address: null,
-    addresses: [],
-  }))
+  const [{ province, city, address }, setSelected] = useState<Selected>(() =>
+    initialStation ? convertStationToSelected(initialStation) : initialSelected
+  )
 
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const [station, distance] = getClosestStation(stations, position)
-        console.log(`${station.city.name} - ${distance}`)
-      },
-      (error) => {
-        console.log(error)
-      }
-    )
-  }, [stations])
-
-  const handleSubmit = (station: Maybe<Station>) => {
-    appDispatch(selectStation(station))
-  }
+  const provinces = useMemo(() => queryProvinces(stations), [stations])
+  const [cities, citiesCache] = useCacheMemo(
+    () => (province ? queryCities(stations, province.value) : []),
+    [stations, province]
+  )
+  const [addresses, addressesCache] = useCacheMemo(
+    () => (city ? queryAddresses(stations, city.value) : []),
+    [stations, city]
+  )
 
   const handleProvinceClick = () => {
     const e = selectProvinceRef.current!
@@ -85,42 +69,42 @@ export const SelectStation = ({ stations }: Props) => {
   }
 
   const handleProvinceChange = (option: Maybe<Option>) => {
-    const newCities = createCityOptions(stations, option!.value)
-    const newCity = newCities.length === 1 ? newCities[0] : null
-    setState({
-      ...state,
+    const cities = queryCities(stations, option!.value)
+    const city = cities.length === 1 ? cities[0] : null
+    setSelected({
       province: option,
-      city: newCity,
-      cities: newCities,
+      city: city,
       address: null,
-      addresses: [],
     })
-    handleSubmit(null)
+    citiesCache.current = cities
+    onSubmit(null)
   }
 
   const handleCityChange = (option: Maybe<Option>) => {
-    const newAddresses = createAddressOptions(stations, option!.value)
-    const newAddress = newAddresses.length === 1 ? newAddresses[0] : null
-    setState({
-      ...state,
+    const addresses = queryAddresses(stations, option!.value)
+    const address = addresses.length === 1 ? addresses[0] : null
+    setSelected({
+      province,
       city: option,
-      address: newAddress,
-      addresses: newAddresses,
+      address,
     })
-    handleSubmit(newAddress ? newAddress.value : null)
+    addressesCache.current = addresses
+    const station = address ? address.value : null
+    onSubmit(station)
   }
 
   const handleAddressChange = (option: Maybe<Option<Station>>) => {
-    setState({
-      ...state,
+    setSelected({
+      province,
+      city,
       address: option,
     })
-    handleSubmit(option!.value)
+    onSubmit(option!.value)
   }
 
   return (
     <div className='flex flex-col gap-2'>
-      <div className='flex flex-auto gap-2 cursor-pointer'>
+      <div className='flex flex-auto gap-2'>
         <IconCircle onClick={handleProvinceClick} type='province'>
           <MdTerrain />
         </IconCircle>
@@ -128,9 +112,9 @@ export const SelectStation = ({ stations }: Props) => {
           ref={selectProvinceRef}
           name='province'
           placeholder='Województwo...'
-          isDisabled={!state.provinces.length}
-          value={state.province}
-          options={state.provinces}
+          isDisabled={!provinces.length}
+          value={province}
+          options={provinces}
           onChange={handleProvinceChange}
           className='flex-1 drop-shadow-md'
           autoFocus
@@ -138,7 +122,7 @@ export const SelectStation = ({ stations }: Props) => {
           menuPosition={'fixed'}
         />
       </div>
-      <div className='flex flex-auto gap-2 cursor-pointer'>
+      <div className='flex flex-auto gap-2'>
         <IconCircle onClick={handleCityClick} type='city'>
           <MdLocationCity />
         </IconCircle>
@@ -146,16 +130,16 @@ export const SelectStation = ({ stations }: Props) => {
           ref={selectCityRef}
           name='city'
           placeholder='Miejscowość...'
-          isDisabled={!state.cities.length}
-          value={state.city}
-          options={state.cities}
+          isDisabled={!cities.length}
+          value={city}
+          options={cities}
           onChange={handleCityChange}
           className='flex-1 drop-shadow-md'
           menuPortalTarget={document.body}
           menuPosition={'fixed'}
         />
       </div>
-      <div className='flex flex-auto gap-2 cursor-pointer'>
+      <div className='flex flex-auto gap-2'>
         <IconCircle onClick={handleAddressClick} type='address'>
           <BsFillHouseFill />
         </IconCircle>
@@ -163,9 +147,9 @@ export const SelectStation = ({ stations }: Props) => {
           ref={selectAddressRef}
           name='address'
           placeholder='Adres...'
-          isDisabled={!state.addresses.length}
-          value={state.address}
-          options={state.addresses}
+          isDisabled={!addresses.length}
+          value={address}
+          options={addresses}
           onChange={handleAddressChange}
           className='flex-1 drop-shadow-md'
           menuPortalTarget={document.body}
