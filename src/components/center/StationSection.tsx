@@ -11,7 +11,7 @@ export const StationSection = ({ station }: Props) => {
 
   return (
     <div>
-      <h3 className='text-lg py-2'>Informacje o stacji pomiarowej</h3>
+      <h3 className='text-lg py-2'>Informacje szczegółowe</h3>
       <div>
         <p>Województwo: {provinceName}</p>
         <p>Powiat: {district}</p>
