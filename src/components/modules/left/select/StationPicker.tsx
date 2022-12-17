@@ -1,17 +1,17 @@
-import { useMemo, useState } from 'react'
-import { MdLocationCity, MdTerrain } from 'react-icons/md'
+import { useState, useMemo } from 'react'
 import { BsFillHouseFill } from 'react-icons/bs'
-import { Maybe, Station, Stations } from 'types'
+import { MdTerrain, MdLocationCity } from 'react-icons/md'
 import { useCacheMemo } from 'hooks/useCacheMemo'
+import { Stations, Maybe, Station } from 'types'
 import { SelectButton } from './SelectButton'
-import {
-  queryAddresses,
-  queryCities,
-  queryProvinces,
-  initialSelected,
-  convertStationToSelected,
-} from './utils'
 import { Selected, Option } from './types'
+import {
+  convertStationToSelected,
+  initialSelected,
+  queryProvinces,
+  queryCities,
+  queryAddresses,
+} from './utils'
 
 interface Props {
   stations: Stations
@@ -19,7 +19,7 @@ interface Props {
   initialStation?: Station
 }
 
-export const SelectStationContainer = ({
+export const StationPicker = ({
   stations,
   onSubmit,
   initialStation,
@@ -62,34 +62,39 @@ export const SelectStationContainer = ({
   }
 
   return (
-    <div className='flex flex-col gap-2'>
+    <>
       <SelectButton
         name='province'
         value={province}
         placeholder='Województwo...'
         options={provinces}
         onChange={handleProvinceChange}
+        color='bg-emerald-900'
       >
         <MdTerrain />
       </SelectButton>
+
       <SelectButton
         name='city'
         value={city}
         placeholder='Miejscowość...'
         options={cities}
         onChange={handleCityChange}
+        color='bg-emerald-700'
       >
         <MdLocationCity />
       </SelectButton>
+
       <SelectButton
         name='address'
         value={address}
         placeholder='Adres...'
         options={addresses}
         onChange={handleAddressChange}
+        color='bg-emerald-500'
       >
         <BsFillHouseFill />
       </SelectButton>
-    </div>
+    </>
   )
 }

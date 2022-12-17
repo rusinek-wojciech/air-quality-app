@@ -47,3 +47,9 @@ export const getClosestStation = (
 
   return [station, currentMinDistance]
 }
+
+export const geolocationPromise: Promise<GeolocationPosition> = new Promise(
+  (resolve, reject) => {
+    return navigator.geolocation.getCurrentPosition(resolve, reject)
+  }
+)

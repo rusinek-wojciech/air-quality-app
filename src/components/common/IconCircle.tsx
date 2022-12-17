@@ -1,12 +1,12 @@
 import clsx from 'clsx'
 
 interface Props {
-  children: JSX.Element
-  onClick: () => void
-  type: 'province' | 'city' | 'address'
+  children?: JSX.Element
+  onClick?: () => void
+  className?: string
 }
 
-export const IconCircle = ({ children, onClick, type }: Props) => {
+export const IconCircle = ({ children, onClick, className }: Props) => {
   return (
     <div
       onClick={onClick}
@@ -15,9 +15,7 @@ export const IconCircle = ({ children, onClick, type }: Props) => {
         '[&>*]:w-2/3 [&>*]:h-2/3 [&>*]:text-white',
         'flex justify-center items-center',
         'shadow-md rounded-full h-9 w-9 flex-initial cursor-pointer',
-        type === 'province' && 'bg-emerald-900',
-        type === 'city' && 'bg-emerald-700',
-        type === 'address' && 'bg-emerald-500'
+        className
       )}
     >
       {children}
