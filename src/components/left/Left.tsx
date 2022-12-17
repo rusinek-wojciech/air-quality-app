@@ -5,7 +5,7 @@ import { selectStation } from '../../store/slice/stationSlice'
 import { Maybe, Station } from '../../types'
 import { Handler } from '../common/Handler'
 import { getClosestStation } from './location'
-import { SelectStation } from './SelectStation'
+import { SelectStationContainer } from './select/SelectStationContainer'
 
 export const Left = () => {
   const dispatch = useAppDispatch()
@@ -32,7 +32,7 @@ export const Left = () => {
     <div className='flex-1 p-4 bg-slate-200 min-w-80'>
       <Handler isLoading={isLoading} isError={isError}>
         <h3 className='text-lg py-2'>Wybierz stację pomiarową</h3>
-        <SelectStation
+        <SelectStationContainer
           key={`${!geolocationStation}`}
           stations={stations!}
           onSubmit={handleStationSubmit}

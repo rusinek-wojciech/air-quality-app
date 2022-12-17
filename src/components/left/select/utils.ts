@@ -1,4 +1,4 @@
-import { Maybe, Station, Stations } from '../../types'
+import { Maybe, Station, Stations } from '../../../types'
 import sortBy from 'lodash/sortBy'
 import uniq from 'lodash/uniq'
 
