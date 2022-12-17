@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react'
-import { useAppSelector } from '../../store/hooks'
-import { Spinner } from '../common/Spinner'
+import { useAppSelector } from 'store/hooks'
+import { Spinner } from 'components/common/Spinner'
 
 const GraphSection = lazy(() =>
   import('./GraphSection').then((M) => ({

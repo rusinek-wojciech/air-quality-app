@@ -1,4 +1,4 @@
-import { Maybe, Station } from '../../../types'
+import { Maybe, Station } from 'types'
 
 export interface Selected {
   province: Maybe<Option>

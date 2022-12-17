@@ -1,6 +1,6 @@
-import { Station, Stations } from '../../../types'
 import sortBy from 'lodash/sortBy'
 import uniq from 'lodash/uniq'
+import { Station, Stations } from 'types'
 import { Selected, Option } from './types'
 
 export const initialSelected: Selected = {

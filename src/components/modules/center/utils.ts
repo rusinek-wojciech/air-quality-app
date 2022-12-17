@@ -1,4 +1,4 @@
-import { Sensors, AirIndex, Station, AirSensors } from '../../types'
+import { Sensors, AirIndex, Station, AirSensors } from 'types'
 
 export const convertToAirSensors = (
   sensors: Sensors,

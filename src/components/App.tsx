@@ -1,6 +1,6 @@
-import { Right } from './right/Right,'
-import { Left } from './left/Left'
-import { Center } from './center/Center'
+import { Right } from './modules/right/Right,'
+import { Left } from './modules/left/Left'
+import { Center } from './modules/center/Center'
 
 export const App = () => {
   return (

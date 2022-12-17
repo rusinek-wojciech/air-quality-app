@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
-import { giosApi } from './api/giosApi'
-import { stationSlice } from './slice/stationSlice'
+import { giosApi } from 'store/api/giosApi'
+import { stationSlice } from 'store/slice/stationSlice'
 
 export const store = configureStore({
   reducer: {

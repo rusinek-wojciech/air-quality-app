@@ -1,9 +1,9 @@
 import {
   useGetSensorsByStationIdQuery,
   useGetAirIndexByStationIdQuery,
-} from '../../store/api/giosApi'
-import { Station } from '../../types'
-import { Handler } from '../common/Handler'
+} from 'store/api/giosApi'
+import { Station } from 'types'
+import { Handler } from 'components/common/Handler'
 import { SensorsSection } from './SensorsSection'
 import { StationSection } from './StationSection'
 import { Title } from './Title'
