@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { AirSensor } from '../../types'
+import { AirSensor } from 'types'
 
 interface Props {
   airSensor: AirSensor

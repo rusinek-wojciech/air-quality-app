@@ -1,5 +1,5 @@
-import { Station } from '../../types'
-import { getStationDetails } from './utilts'
+import { Station } from 'types'
+import { getStationDetails } from './utils'
 
 interface Props {
   station: Station

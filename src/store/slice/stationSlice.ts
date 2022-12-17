@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AirSensor, Maybe, Station } from '../../types'
+import { AirSensor, Maybe, Station } from 'types'
 
 interface State {
   selectedStation: Maybe<Station>

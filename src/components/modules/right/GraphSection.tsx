@@ -1,7 +1,6 @@
-import { useGetMeasurementsBySensorIdQuery } from '../../store/api/giosApi'
-import { AirSensor } from '../../types'
-
-import { Handler } from '../common/Handler'
+import { useGetMeasurementsBySensorIdQuery } from 'store/api/giosApi'
+import { AirSensor } from 'types'
+import { Handler } from 'components/common/Handler'
 import { Graph } from './Graph'
 
 interface Props {

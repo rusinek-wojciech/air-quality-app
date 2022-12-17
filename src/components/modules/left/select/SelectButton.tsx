@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import Select, { SelectInstance } from 'react-select'
-import { Maybe } from '../../../types'
+import { Maybe } from 'types'
 import { IconCircle } from './IconCircle'
 import { Option } from './types'
 

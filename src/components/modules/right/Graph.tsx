@@ -11,7 +11,7 @@ import {
   ChartData,
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
-import { Measurements } from '../../types'
+import { Measurements } from 'types'
 
 ChartJS.register(
   CategoryScale,

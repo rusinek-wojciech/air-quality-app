@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react'
-import { Maybe, Station, Stations } from '../../../types'
 import { MdLocationCity, MdTerrain } from 'react-icons/md'
 import { BsFillHouseFill } from 'react-icons/bs'
-import { useCacheMemo } from '../../../hooks/useCacheMemo'
+import { Maybe, Station, Stations } from 'types'
+import { useCacheMemo } from 'hooks/useCacheMemo'
 import { SelectButton } from './SelectButton'
 import {
   queryAddresses,

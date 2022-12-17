@@ -1,4 +1,4 @@
-import { Station, Stations } from '../../types'
+import { Station, Stations } from 'types'
 
 const PI_180 = Math.PI / 180
 const R = 6371

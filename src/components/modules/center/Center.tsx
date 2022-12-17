@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react'
-import { useAppSelector } from '../../store/hooks'
-import { Spinner } from '../common/Spinner'
+import { useAppSelector } from 'store/hooks'
+import { Spinner } from 'components/common/Spinner'
 
 const StationDetails = lazy(() =>
   import('./StationDetails').then((M) => ({ default: M.StationDetails }))

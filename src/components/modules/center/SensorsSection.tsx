@@ -1,8 +1,8 @@
-import { useAppDispatch } from '../../store/hooks'
-import { selectAirSensor } from '../../store/slice/stationSlice'
-import { Sensors, AirIndex, AirSensor } from '../../types'
+import { useAppDispatch } from '../../../store/hooks'
+import { selectAirSensor } from 'store/slice/stationSlice'
+import { Sensors, AirIndex, AirSensor } from 'types'
 import { AirSensorChip } from './AirSensorChip'
-import { convertToAirSensors } from './utilts'
+import { convertToAirSensors } from './utils'
 
 interface Props {
   sensors: Sensors

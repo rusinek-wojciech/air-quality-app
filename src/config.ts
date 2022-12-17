@@ -1,1 +1,1 @@
-export const endpoint = 'http://localhost:5000'
+export const proxyAddress = 'http://localhost:5000'

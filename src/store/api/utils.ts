@@ -1,4 +1,4 @@
-import { AirIndexRaw, AirIndex } from '../../types'
+import { AirIndexRaw, AirIndex } from 'types'
 
 export const capitalizeFirstLetter = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
