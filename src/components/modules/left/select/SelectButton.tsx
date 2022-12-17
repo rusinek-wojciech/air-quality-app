@@ -1,8 +1,18 @@
 import { useRef } from 'react'
 import Select, { SelectInstance } from 'react-select'
 import { Maybe } from 'types'
-import { IconCircle } from './IconCircle'
+import { IconCircle } from 'components/common/IconCircle'
 import { Option } from './types'
+
+interface Props<T> {
+  name: string
+  value: Maybe<Option<T>>
+  placeholder: string
+  options: Option<T>[]
+  onChange: (option: Option<T>) => void
+  children: JSX.Element
+  color: string
+}
 
 export const SelectButton = <T,>({
   name,
@@ -11,14 +21,8 @@ export const SelectButton = <T,>({
   options,
   onChange,
   children,
-}: {
-  name: 'province' | 'city' | 'address'
-  value: Maybe<Option<T>>
-  placeholder: string
-  options: Option<T>[]
-  onChange: (option: Option<T>) => void
-  children: JSX.Element
-}) => {
+  color,
+}: Props<T>) => {
   const selectRef = useRef<SelectInstance<Maybe<Option<T>>>>(null)
 
   const handleIconClick = () => {
@@ -37,7 +41,7 @@ export const SelectButton = <T,>({
 
   return (
     <div className='flex flex-auto gap-2'>
-      <IconCircle onClick={handleIconClick} type={name}>
+      <IconCircle onClick={handleIconClick} className={color}>
         {children}
       </IconCircle>
       <Select
