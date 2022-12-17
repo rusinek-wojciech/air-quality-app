@@ -38,28 +38,26 @@ export const SelectStationContainer = ({
     [stations, city]
   )
 
-  const handleProvinceChange = (option: Option) => {
-    const provinceName = option.value
-    const cities = queryCities(stations, provinceName)
+  const handleProvinceChange = (province: Option) => {
+    const cities = queryCities(stations, province.value)
     const city = cities.length === 1 ? cities[0] : null
-    setSelected({ province: option, city: city, address: null })
+    setSelected({ province, city, address: null })
     citiesCache.current = cities
     onSubmit(null)
   }
 
-  const handleCityChange = (option: Option) => {
-    const cityName = option.value
-    const addresses = queryAddresses(stations, cityName)
+  const handleCityChange = (city: Option) => {
+    const addresses = queryAddresses(stations, city.value)
     const address = addresses.length === 1 ? addresses[0] : null
-    setSelected({ province, city: option, address })
+    setSelected({ province, city, address })
     addressesCache.current = addresses
     const station = address ? address.value : null
     onSubmit(station)
   }
 
-  const handleAddressChange = (option: Option<Station>) => {
-    setSelected({ province, city, address: option })
-    const station = option.value
+  const handleAddressChange = (address: Option<Station>) => {
+    setSelected({ province, city, address })
+    const station = address.value
     onSubmit(station)
   }
 
