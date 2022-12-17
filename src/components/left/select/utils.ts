@@ -1,23 +1,7 @@
-import { Maybe, Station, Stations } from '../../../types'
+import { Station, Stations } from '../../../types'
 import sortBy from 'lodash/sortBy'
 import uniq from 'lodash/uniq'
-
-export interface Selected {
-  province: Maybe<Option>
-  city: Maybe<Option>
-  address: Maybe<Option<Station>>
-}
-
-export interface Values {
-  provinces: Option[]
-  cities: Option[]
-  addresses: Option<Station>[]
-}
-
-export type Option<T = string> = {
-  value: T
-  label: string
-}
+import { Selected, Option } from './types'
 
 export const initialSelected: Selected = {
   province: null,

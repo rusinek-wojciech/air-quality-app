@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import Select, { SelectInstance } from 'react-select'
 import { Maybe } from '../../../types'
 import { IconCircle } from './IconCircle'
-import { Option } from './utils'
+import { Option } from './types'
 
 export const SelectButton = <T,>({
   name,
@@ -16,7 +16,7 @@ export const SelectButton = <T,>({
   value: Maybe<Option<T>>
   placeholder: string
   options: Option<T>[]
-  onChange: (option: Maybe<Option<T>>) => void
+  onChange: (option: Option<T>) => void
   children: JSX.Element
 }) => {
   const selectRef = useRef<SelectInstance<Maybe<Option<T>>>>(null)
@@ -26,6 +26,12 @@ export const SelectButton = <T,>({
     if (!e.props.isDisabled) {
       e.focus()
       e.openMenu('last')
+    }
+  }
+
+  const handleChange = (option: Maybe<Option<T>>) => {
+    if (option) {
+      onChange(option)
     }
   }
 
@@ -41,7 +47,7 @@ export const SelectButton = <T,>({
         isDisabled={!options.length}
         value={value}
         options={options}
-        onChange={onChange}
+        onChange={handleChange}
         className='flex-1 drop-shadow-md'
         menuPortalTarget={document.body}
         menuPosition={'fixed'}

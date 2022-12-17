@@ -8,11 +8,10 @@ import {
   queryAddresses,
   queryCities,
   queryProvinces,
-  Option,
-  Selected,
   initialSelected,
   convertStationToSelected,
 } from './utils'
+import { Selected, Option } from './types'
 
 interface Props {
   stations: Stations
@@ -39,38 +38,29 @@ export const SelectStationContainer = ({
     [stations, city]
   )
 
-  const handleProvinceChange = (option: Maybe<Option>) => {
-    const cities = queryCities(stations, option!.value)
+  const handleProvinceChange = (option: Option) => {
+    const provinceName = option.value
+    const cities = queryCities(stations, provinceName)
     const city = cities.length === 1 ? cities[0] : null
-    setSelected({
-      province: option,
-      city: city,
-      address: null,
-    })
+    setSelected({ province: option, city: city, address: null })
     citiesCache.current = cities
     onSubmit(null)
   }
 
-  const handleCityChange = (option: Maybe<Option>) => {
-    const addresses = queryAddresses(stations, option!.value)
+  const handleCityChange = (option: Option) => {
+    const cityName = option.value
+    const addresses = queryAddresses(stations, cityName)
     const address = addresses.length === 1 ? addresses[0] : null
-    setSelected({
-      province,
-      city: option,
-      address,
-    })
+    setSelected({ province, city: option, address })
     addressesCache.current = addresses
     const station = address ? address.value : null
     onSubmit(station)
   }
 
-  const handleAddressChange = (option: Maybe<Option<Station>>) => {
-    setSelected({
-      province,
-      city,
-      address: option,
-    })
-    onSubmit(option!.value)
+  const handleAddressChange = (option: Option<Station>) => {
+    setSelected({ province, city, address: option })
+    const station = option.value
+    onSubmit(station)
   }
 
   return (
