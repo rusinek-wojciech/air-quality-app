@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { proxyAddress } from 'config'
+import { giosApiRestAddress } from 'config'
 import {
   AirIndex,
   AirIndexRaw,
@@ -23,13 +23,10 @@ type GetAirIndexByStationIdRawResponse = AirIndexRaw
 type GetAirIndexByStationIdResponse = AirIndex
 type GetAirIndexByStationIdPayload = { stationId: Id }
 
-/**
- * https://powietrze.gios.gov.pl/
- */
 export const giosApi = createApi({
   reducerPath: 'giosApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${proxyAddress}/pjp-api/rest/`,
+    baseUrl: giosApiRestAddress,
   }),
   tagTypes: ['Stations', 'Sensors', 'Measurements', 'AirIndecies'],
   endpoints: (builder) => ({

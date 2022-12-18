@@ -16,11 +16,11 @@ const calculateDistance = (
   const dLat = toRad(lat2 - lat1)
   const dLon = toRad(lon2 - lon1)
 
-  const sin2dLat = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-  const sin2dLon = Math.sin(dLon / 2) * Math.sin(dLon / 2)
+  const sindLat = Math.sin(dLat / 2)
+  const sindLon = Math.sin(dLon / 2)
   const cos2lat = Math.cos(toRad(lat1)) * Math.cos(toRad(lat2))
 
-  const a = sin2dLat + sin2dLon * cos2lat
+  const a = sindLat * sindLat + sindLon * sindLon * cos2lat
   const angle = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
   const distance = R * angle
   return distance
