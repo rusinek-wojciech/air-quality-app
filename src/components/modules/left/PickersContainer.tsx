@@ -11,6 +11,7 @@ interface Props {
 
 export const PickersContainer = ({ stations }: Props) => {
   const [initialStation, setInitialStation] = useState<Station>()
+  const [key, setKey] = useState<number>(0)
   const dispatch = useAppDispatch()
 
   const handleStationSubmit = (station: Maybe<Station>) => {
@@ -18,20 +19,20 @@ export const PickersContainer = ({ stations }: Props) => {
   }
 
   const handleLocationClick = (station: Station) => {
-    // TODO: fix bug with possibility to use this station again
     handleStationSubmit(station)
     setInitialStation(station)
+    setKey(key + 1)
   }
 
   return (
     <div className='flex flex-col gap-2'>
-      <LocationButton stations={stations} onClick={handleLocationClick} />
       <StationPicker
-        key={`${!initialStation}`}
-        stations={stations!}
+        key={key}
+        stations={stations}
         onSubmit={handleStationSubmit}
         initialStation={initialStation}
       />
+      <LocationButton stations={stations} onClick={handleLocationClick} />
     </div>
   )
 }

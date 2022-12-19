@@ -5,8 +5,6 @@ import {
 import { Station } from 'types'
 import { Handler } from 'components/common/Handler'
 import { SensorsSection } from './SensorsSection'
-import { StationSection } from './StationSection'
-import { Title } from './Title'
 
 interface Props {
   station: Station
@@ -26,9 +24,8 @@ export const StationDetails = ({ station }: Props) => {
 
   return (
     <Handler isLoading={isLoading} isError={isError}>
-      <Title title={station.stationName} />
+      <h2 className='pb-2'>{station.stationName}</h2>
       <SensorsSection sensors={sensors.data!} airIndex={airIndex.data!} />
-      <StationSection station={station} />
     </Handler>
   )
 }

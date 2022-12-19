@@ -15,7 +15,7 @@ export const AirSensorChip = ({ airSensor, onClick, className }: Props) => {
       onClick={onClick}
       className={clsx(
         'ease-in-out duration-300 hover:scale-105 hover:cursor-pointer',
-        'border-4 rounded-2xl shadow-lg w-max p-1',
+        'border-4 rounded-2xl shadow-lg p-1',
         'text-neutral-200 whitespace-nowrap',
         status === 'Brak indeksu' && 'bg-gray-500 border-gray-700',
         status === 'Bardzo dobry' && 'bg-green-700 border-green-900',

@@ -67,7 +67,7 @@ export const Graph = ({ measurements, title }: Props) => {
 
   return (
     <div className='relative h-full w-full'>
-      <h3 className='text-xl'>{title}</h3>
+      <h2 className='pb-2'>{title}</h2>
       <Line width={300} height={200} options={options} data={data} />
     </div>
   )

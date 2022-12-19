@@ -12,14 +12,12 @@ export const Right = () => {
   const airSensor = useAppSelector((state) => state.station.selectedAirSensor)
 
   return (
-    <div className='flex-auto p-4 min-w-80'>
-      <Suspense fallback={<Spinner />}>
-        {airSensor ? (
-          <GraphSection airSensor={airSensor} />
-        ) : (
-          <p>Wybierz czujnik</p>
-        )}
-      </Suspense>
-    </div>
+    <Suspense fallback={<Spinner />}>
+      {airSensor ? (
+        <GraphSection airSensor={airSensor} />
+      ) : (
+        <p>Wybierz czujnik</p>
+      )}
+    </Suspense>
   )
 }

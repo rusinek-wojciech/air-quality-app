@@ -1,4 +1,4 @@
-import { Sensors, AirIndex, Station, AirSensors } from 'types'
+import { Sensors, AirIndex, AirSensors } from 'types'
 
 export const convertToAirSensors = (
   sensors: Sensors,
@@ -59,16 +59,4 @@ export const convertToAirSensors = (
       date: null,
     }
   })
-}
-
-export const getStationDetails = (station: Station) => {
-  const { provinceName, districtName, communeName } = station.city.commune
-  const cityName = station.city.name
-  return {
-    provinceName,
-    commune: cityName === communeName ? '-' : communeName,
-    district: communeName === districtName ? '-' : districtName,
-    cityName,
-    street: station.addressStreet ?? '-',
-  }
 }
