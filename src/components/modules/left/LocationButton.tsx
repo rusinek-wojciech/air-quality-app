@@ -32,7 +32,7 @@ export const LocationButton = ({ stations, onClick }: Props) => {
     <button
       onClick={handleClick}
       disabled={!geolocation}
-      className='flex gap-4 bg-slate-500 rounded-lg p-2 cursor-pointer -ml-2'
+      className='flex gap-4 bg-slate-500 rounded-lg p-2 cursor-pointer -ml-2 drop-shadow-md'
     >
       <IconCircle className='bg-slate-600'>
         <MdLocationPin />
