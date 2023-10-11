@@ -3,14 +3,15 @@ import {
   useGetAirIndexByStationIdQuery,
 } from 'store/api/giosApi'
 import { Station } from 'types'
-import { Handler } from 'components/common/Handler'
+import { Handler } from 'common'
+
 import { SensorsSection } from './SensorsSection'
 
 interface Props {
   station: Station
 }
 
-export const StationDetails = ({ station }: Props) => {
+export function StationDetails({ station }: Props) {
   const sensors = useGetSensorsByStationIdQuery({
     stationId: station.id,
   })

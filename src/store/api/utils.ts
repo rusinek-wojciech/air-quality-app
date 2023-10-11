@@ -1,10 +1,10 @@
 import { AirIndexRaw, AirIndex } from 'types'
 
-export const capitalizeFirstLetter = (str: string) => {
+export function capitalizeFirstLetter(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
 }
 
-export const convertAirIndex = (raw: AirIndexRaw): AirIndex => {
+export function convertAirIndex(raw: AirIndexRaw): AirIndex {
   let result: AirIndex = {
     id: raw.id,
   }

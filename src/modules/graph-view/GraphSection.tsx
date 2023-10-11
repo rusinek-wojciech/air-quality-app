@@ -1,13 +1,13 @@
 import { useGetMeasurementsBySensorIdQuery } from 'store/api/giosApi'
 import { AirSensor } from 'types'
-import { Handler } from 'components/common/Handler'
+import { Handler } from 'common/Handler'
 import { Graph } from './Graph'
 
 interface Props {
   airSensor: AirSensor
 }
 
-export const GraphSection = ({ airSensor }: Props) => {
+export function GraphSection({ airSensor }: Props) {
   const {
     isLoading,
     isError,

@@ -52,7 +52,7 @@ interface Props {
   title: string
 }
 
-export const Graph = ({ measurements, title }: Props) => {
+export function Graph({ measurements, title }: Props) {
   const { values } = measurements
 
   const data: ChartData<'line'> = {

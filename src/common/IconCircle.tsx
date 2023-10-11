@@ -6,7 +6,7 @@ interface Props {
   className?: string
 }
 
-export const IconCircle = ({ children, onClick, className }: Props) => {
+export function IconCircle({ children, onClick, className }: Props) {
   return (
     <div
       onClick={onClick}

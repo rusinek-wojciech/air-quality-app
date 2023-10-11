@@ -3,6 +3,7 @@ import { BsFillHouseFill } from 'react-icons/bs'
 import { MdTerrain, MdLocationCity } from 'react-icons/md'
 import { useCacheMemo } from 'hooks/useCacheMemo'
 import { Stations, Maybe, Station } from 'types'
+
 import { SelectButton } from './SelectButton'
 import { Selected, Option } from './types'
 import {
@@ -19,11 +20,7 @@ interface Props {
   initialStation?: Station
 }
 
-export const StationPicker = ({
-  stations,
-  onSubmit,
-  initialStation,
-}: Props) => {
+export function StationPicker({ stations, onSubmit, initialStation }: Props) {
   const [{ province, city, address }, setSelected] = useState<Selected>(() =>
     initialStation ? convertStationToSelected(initialStation) : initialSelected
   )

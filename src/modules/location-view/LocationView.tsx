@@ -1,8 +1,9 @@
 import { useGetStationsQuery } from 'store/api/giosApi'
-import { Handler } from 'components/common/Handler'
+import { Handler } from 'common'
+
 import { PickersContainer } from './PickersContainer'
 
-export const Left = () => {
+export function LocationView() {
   const { data: stations, isLoading, isError } = useGetStationsQuery()
 
   return (

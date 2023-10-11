@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { MdLocationPin } from 'react-icons/md'
 import { Station, Stations } from 'types'
-import { IconCircle } from 'components/common/IconCircle'
+import { IconCircle } from 'common/IconCircle'
 import { useAppDispatch, useAppSelector } from 'store/hooks'
 import { setGeolocation } from 'store/slice/stationSlice'
 
@@ -10,7 +10,7 @@ interface Props {
   onClick: (station: Station) => void
 }
 
-export const LocationButton = ({ stations, onClick }: Props) => {
+export function LocationButton({ stations, onClick }: Props) {
   const geolocation = useAppSelector((state) => state.station.geolocation)
   const dispatch = useAppDispatch()
 

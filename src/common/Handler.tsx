@@ -7,11 +7,7 @@ interface Props {
   children: JSX.Element | JSX.Element[]
 }
 
-export const Handler = ({
-  isLoading,
-  isError,
-  children,
-}: Props): JSX.Element => {
+export function Handler({ isLoading, isError, children }: Props): JSX.Element {
   if (isLoading) {
     return <Spinner />
   }

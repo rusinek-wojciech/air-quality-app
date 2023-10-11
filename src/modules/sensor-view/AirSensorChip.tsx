@@ -7,7 +7,7 @@ interface Props {
   className?: string
 }
 
-export const AirSensorChip = ({ airSensor, onClick, className }: Props) => {
+export function AirSensorChip({ airSensor, onClick, className }: Props) {
   const { code, name, status } = airSensor
 
   return (

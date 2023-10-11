@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { useAppSelector } from 'store/hooks'
-import { Spinner } from 'components/common/Spinner'
+import { Spinner } from 'common/Spinner'
 
 const GraphSection = lazy(() =>
   import('./GraphSection').then((M) => ({
@@ -8,7 +8,7 @@ const GraphSection = lazy(() =>
   }))
 )
 
-export const Right = () => {
+export function GraphView() {
   const airSensor = useAppSelector((state) => state.station.selectedAirSensor)
 
   return (

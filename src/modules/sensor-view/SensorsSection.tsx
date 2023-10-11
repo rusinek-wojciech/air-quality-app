@@ -1,6 +1,7 @@
-import { useAppDispatch } from '../../../store/hooks'
+import { useAppDispatch } from 'store/hooks'
 import { selectAirSensor } from 'store/slice/stationSlice'
 import { Sensors, AirIndex, AirSensor } from 'types'
+
 import { AirSensorChip } from './AirSensorChip'
 import { convertToAirSensors } from './utils'
 
@@ -9,7 +10,7 @@ interface Props {
   airIndex: AirIndex
 }
 
-export const SensorsSection = ({ sensors, airIndex }: Props) => {
+export function SensorsSection({ sensors, airIndex }: Props) {
   const dispatch = useAppDispatch()
 
   const handleAirSensorChipClick = (airSensor: AirSensor) => () => {

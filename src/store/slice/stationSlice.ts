@@ -21,8 +21,7 @@ export const setGeolocation = createAsyncThunk(
   'geolocation',
   async (stations: Stations) => {
     const position = await geolocationPromise
-    const [station, distance] = getClosestStation(stations, position)
-    return { station, distance }
+    return getClosestStation(stations, position)
   }
 )
 
@@ -30,11 +29,11 @@ export const stationSlice = createSlice({
   name: 'station',
   initialState: initialState,
   reducers: {
-    selectStation: (state, action: PayloadAction<Maybe<Station>>) => {
+    selectStation(state, action: PayloadAction<Maybe<Station>>) {
       state.selectedStation = action.payload
       state.selectedAirSensor = null
     },
-    selectAirSensor: (state, action: PayloadAction<AirSensor>) => {
+    selectAirSensor(state, action: PayloadAction<AirSensor>) {
       state.selectedAirSensor = action.payload
     },
   },

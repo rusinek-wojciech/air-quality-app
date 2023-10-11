@@ -1,9 +1,9 @@
 import { Sensors, AirIndex, AirSensors } from 'types'
 
-export const convertToAirSensors = (
+export function convertToAirSensors(
   sensors: Sensors,
   airIndex: AirIndex
-): AirSensors => {
+): AirSensors {
   return sensors.map((sensor) => {
     const { id, param } = sensor
     const { paramCode, paramName } = param

@@ -1,18 +1,18 @@
-import { Right } from './modules/right/Right,'
-import { Left } from './modules/left/Left'
-import { Center } from './modules/center/Center'
+import { GraphView } from './modules/graph-view/GraphView'
+import { LocationView } from './modules/location-view/LocationView'
+import { SensorView } from './modules/sensor-view/SensorView'
 
-export const App = () => {
+export function App() {
   return (
     <div className='flex flex-wrap min-h-screen max-w-7xl mx-auto shadow-2xl'>
       <div className='flex-1 p-4 min-w-80 bg-slate-300 shadow-2xl'>
-        <Left />
+        <LocationView />
       </div>
       <div className='flex-1 p-4 min-w-80 bg-slate-200 shadow-2xl'>
-        <Center />
+        <SensorView />
       </div>
       <div className='flex-1 p-4 min-w-80 bg-slate-100 shadow-2xl'>
-        <Right />
+        <GraphView />
       </div>
     </div>
   )

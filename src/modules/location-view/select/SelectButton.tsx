@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import Select, { SelectInstance } from 'react-select'
 import { Maybe } from 'types'
-import { IconCircle } from 'components/common/IconCircle'
+import { IconCircle } from 'common/IconCircle'
 import { Option } from './types'
 
 interface Props<T> {
@@ -9,20 +9,20 @@ interface Props<T> {
   value: Maybe<Option<T>>
   placeholder: string
   options: Option<T>[]
-  onChange: (option: Option<T>) => void
   children: JSX.Element
   color: string
+  onChange: (option: Option<T>) => void
 }
 
-export const SelectButton = <T,>({
+export function SelectButton<T>({
   name,
   value,
   placeholder,
   options,
-  onChange,
   children,
   color,
-}: Props<T>) => {
+  onChange,
+}: Props<T>) {
   const selectRef = useRef<SelectInstance<Maybe<Option<T>>>>(null)
 
   const handleIconClick = () => {
