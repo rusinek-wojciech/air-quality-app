@@ -23,7 +23,7 @@ export function LocationButton({ stations, onClick }: Props) {
   }
 
   const details = geolocation
-    ? `${geolocation.station.stationName}, ${geolocation.distance.toFixed(
+    ? `${geolocation.station.stationName} | ${geolocation.distance.toFixed(
         2
       )} km`
     : 'Brakuje zgody na użycie lokalizacji'

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node server.js"
   },
-  "author": "ikinsure",
+  "author": "wrusinek",
   "license": "ISC",
   "type": "module",
   "dependencies": {
